@@ -2,12 +2,18 @@ spring:
   application:
     name: feedgram-auth
 
+  datasource:
+    url: jdbc:postgresql://localhost:5432/feedgram
+    username: postgres
+    password: tilser
+
 server:
   port: 9000
 
 eureka:
   client:
-    service-url: http://localhost:8761/eureka
+    service-url:
+      default-zone: http://localhost:8761/eureka
 
 security:
   jwt:
