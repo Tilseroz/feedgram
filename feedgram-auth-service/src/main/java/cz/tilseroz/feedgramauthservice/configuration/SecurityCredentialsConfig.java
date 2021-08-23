@@ -78,7 +78,7 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
                 .roles();
 
         /**
-         * Nyní ještě nakonfigurujeme databázoví authentication provider
+         * Nyní ještě nakonfigurujeme databázový authentication provider
          *
          * Spring má UserDetailService interface, který může být overridden, abychom mohli použít naši implementaci pro získání dat z databáze.
          * UserDetailsService objekt je použit auth managerem pro načtení uživatele z databáze.
@@ -145,6 +145,10 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     *  V UserResource potřebujeme přístup k AuthenticationManageru. Ten je defaultně nedostupný.
+     *  Proto si ho přidáme do application contextu pomocí anotace @Bean, abychom si ho v UserResource mohli autowirnout.
+     */
     @Bean(BeanIds.AUTHENTICATION_MANAGER)
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
