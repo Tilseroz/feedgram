@@ -1,7 +1,13 @@
 package cz.tilseroz.feedgramauthservice.configuration;
 
+import cz.tilseroz.feedgramauthservice.model.FeedUserDetails;
 import cz.tilseroz.feedgramauthservice.service.JwtProvider;
 import cz.tilseroz.feedgramauthservice.service.UserService;
+import io.jsonwebtoken.Claims;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -9,10 +15,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-//    TODO
+//    TODO - pochopit a napsat si co je OncePerRequestFilter do podrobna.
 //    https://stackoverflow.com/questions/13152946/what-is-onceperrequestfilter
 
     private final JwtConfiguration jwtConfig;
@@ -57,10 +65,51 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
          */
         String token = header.replace(jwtConfig.getPrefix(), "");
 
-        //TODO pokračovat zde
         if (tokenProvider.validateJwtToken(token)) {
+            Claims claims = tokenProvider.getClaimsFromJwt(token);
+            String username = claims.getSubject();
+            UsernamePasswordAuthenticationToken authentication;
 
+            /**
+             * Pokud je to service account, tak nechceme načítat user detail
+             */
+            if (username.equals(serviceUsername)) {
+                List<String> authorities = (List<String>) claims.get("authorities");
+                authentication = new UsernamePasswordAuthenticationToken(username, null,
+                        authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
+            } else {
+                authentication = userService
+                        .findByUsername(username)
+                        .map(FeedUserDetails::new)
+                        .map(userDetails -> {
+
+                            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                                    userDetails, null, userDetails.getAuthorities()
+                            );
+                            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                            return authenticationToken;
+
+                        })
+                        .orElse(null);
+            }
+
+            /**
+             * SecurityContext a SecurityContextHolder jsou dvě základní třídy pro Spring Security.
+             * SecurityContext se používá pro uchovávání detailů ohledně právě přihlášeného uživatele neboli principle.
+             * SecurityContextHolder je helper class. Poskytuje nám přístup k SecurityContextu.
+             *
+             * Více zde - https://www.javacodegeeks.com/2018/02/securitycontext-securitycontextholder-spring-security.html
+             */
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        } else {
+            SecurityContextHolder.clearContext();
         }
+
+        /**
+         * Všechno hotové, pojďme do dalšího filtru na řetězci
+         */
+        filterChain.doFilter(request, response);
 
     }
 }
