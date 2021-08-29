@@ -64,7 +64,7 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
      *
      * AuthenticationProvider
      * Zpracovává konkrétní typy ověřování. Jeho rozhraní nabízí jenom dvě funkce: "authenticate" (řeší authentication request)
-     * a "supports" (kontroluje, zda provider podporuje typ autentikace
+     * a "supports" (kontroluje, zda provider podporuje typ autentikace)
      *
      */
     @Override

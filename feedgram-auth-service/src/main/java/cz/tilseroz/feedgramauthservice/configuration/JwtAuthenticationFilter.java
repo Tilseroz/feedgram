@@ -18,10 +18,15 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Základní třída filtu - OncePerRequestFiler - nám zaručí, že se filter provede pouze jednou pro jeden request.
+ * Autentikaci chceme provádět vždycky jenom jednou v pro jeden request.
+ * Může se stát, že nám přijde jiný request, který ale používá stejný filter a tím dojde k provedení requestu znovu.
+ * Ve Spring security je to common use-case. Viz https://stackoverflow.com/questions/13152946/what-is-onceperrequestfilter
+ *
+ * @author David Tilšer
+ */
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-
-//    TODO - pochopit a napsat si co je OncePerRequestFilter do podrobna.
-//    https://stackoverflow.com/questions/13152946/what-is-onceperrequestfilter
 
     private final JwtConfiguration jwtConfig;
     private JwtProvider tokenProvider;
