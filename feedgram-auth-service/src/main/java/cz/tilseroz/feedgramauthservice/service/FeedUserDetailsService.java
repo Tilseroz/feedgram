@@ -7,6 +7,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+/**
+ * Implementujeme Spring Security UserDetailsService. Flow Spring Security:
+ * 1. prvně ověří, že uživatel existuje a je validní (implementace v FeedUserDetails.isValid)
+ * 2. jako druhé ověří heslo
+ *
+ * Vše se děje zde AbstractUserDetailsAuthenticationProvider.authenticate.
+ */
 @Service
 public class FeedUserDetailsService implements UserDetailsService {
 
