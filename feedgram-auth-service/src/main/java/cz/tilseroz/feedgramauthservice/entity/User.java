@@ -1,27 +1,39 @@
 package cz.tilseroz.feedgramauthservice.entity;
 
+import cz.tilseroz.feedgramauthservice.enums.RoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
+import javax.management.relation.Role;
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.Instant;
-import java.util.Set;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity(name = "Users")
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "name")
+    private String name;
 
     @NotBlank
     @Size(max = 15)
@@ -41,10 +53,15 @@ public class User {
      * Instant se používá pro uložení času do databáze. Na rozdíl od starého java.util.Date, které má přesnost na milisekundy, má Instant přesnost na nanosekundy.
      */
     @CreatedDate
+    @Column(name = "created_at")
     private Instant createdAt;
 
+    @Column(name = "user_role")
+    @Enumerated(EnumType.STRING)
+    private RoleEnum role;
+
+    @Column
     private boolean active;
-    private Set<Role> roles;
 
     public User(User user) {
         this.id = user.getId();
@@ -52,6 +69,6 @@ public class User {
         this.password = user.getPassword();
         this.email = user.getEmail();
         this.active = user.isActive();
-        this.roles = user.getRoles();
+        this.role = user.getRole();
     }
 }

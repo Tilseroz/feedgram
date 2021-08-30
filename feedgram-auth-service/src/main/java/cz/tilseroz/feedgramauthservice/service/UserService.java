@@ -1,7 +1,7 @@
 package cz.tilseroz.feedgramauthservice.service;
 
-import cz.tilseroz.feedgramauthservice.entity.Role;
 import cz.tilseroz.feedgramauthservice.entity.User;
+import cz.tilseroz.feedgramauthservice.enums.RoleEnum;
 import cz.tilseroz.feedgramauthservice.exception.EmailAlreadyUsedException;
 import cz.tilseroz.feedgramauthservice.exception.UsernameAlreadyExistsException;
 import cz.tilseroz.feedgramauthservice.repository.UserRepository;
@@ -48,10 +48,8 @@ public class UserService {
         log.info("Registering user {} with email address {}.", user.getUsername(), user.getEmail());
 
         user.setActive(true);
+        user.setRole(RoleEnum.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(new HashSet<>() {{
-            add(Role.USER);
-        }});
 
         return userRepository.save(user);
 

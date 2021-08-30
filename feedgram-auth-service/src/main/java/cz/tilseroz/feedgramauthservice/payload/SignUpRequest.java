@@ -2,6 +2,7 @@ package cz.tilseroz.feedgramauthservice.payload;
 
 import lombok.Data;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -17,6 +18,7 @@ public class SignUpRequest {
     private String username;
 
     @NotBlank
+    @Email
     @Size(max = 40)
     private String email;
 

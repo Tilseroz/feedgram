@@ -26,6 +26,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.time.Instant;
+import java.util.Date;
 
 @RestController
 @Slf4j
@@ -63,9 +65,11 @@ public class UserResource {
 
         User user = User
                 .builder()
+                .name(signUpRequest.getName())
                 .username(signUpRequest.getUsername())
                 .email(signUpRequest.getEmail())
                 .password(signUpRequest.getPassword())
+                .createdAt(Instant.now())
                 .build();
 
         try {
