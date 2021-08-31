@@ -4,13 +4,13 @@ import cz.tilseroz.feedgramauthservice.entity.User;
 import cz.tilseroz.feedgramauthservice.enums.RoleEnum;
 import cz.tilseroz.feedgramauthservice.exception.EmailAlreadyUsedException;
 import cz.tilseroz.feedgramauthservice.exception.UsernameAlreadyExistsException;
+import cz.tilseroz.feedgramauthservice.messaging.UserEventSender;
 import cz.tilseroz.feedgramauthservice.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Optional;
 
 @Service
@@ -22,6 +22,9 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserEventSender userEventSender;
 
     public Optional<User> findByUsername(String username) {
         log.info("Retrieving user {}", username);
@@ -51,8 +54,23 @@ public class UserService {
         user.setRole(RoleEnum.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        return userRepository.save(user);
+        User registeredUser = userRepository.save(user);
+        userEventSender.sendUserCreated(registeredUser);
 
+        return registeredUser;
+    }
+
+    public User updateUser(User user) {
+        log.info("Request for updating user {}", user.getUsername());
+
+        /**
+         *  Používáme JpaRepository interface, který je implementovaný ve Springu v SimpleJpaRepository. Tam můžeme v metodě "save" vidět, že pokud entita existuje, tak
+         *  použijeme merge, jinak persist. Tzn. save je zde správně a něco ve stylu "udpate" apod. tady nenajdeme.
+         */
+        User updatedUser = userRepository.save(user);
+        userEventSender.sendUserUpdated(user);
+
+        return updatedUser;
     }
 
 }

@@ -7,6 +7,19 @@ spring:
     username: postgres
     password: tilser
 
+  cloud:
+    stream:
+      kafka:
+        binders:
+          brokers: localhost:9092
+          configuration:
+            key:
+              serializer: org.apache.kafka.common.serialization.StringSerializer
+      bindings:
+        feedgramUserChanged:
+          destination: feedgram.user.changed
+          contentType: application/json
+
 server:
   port: 9000
 

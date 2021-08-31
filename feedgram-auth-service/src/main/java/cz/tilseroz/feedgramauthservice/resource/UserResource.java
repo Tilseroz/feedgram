@@ -8,6 +8,7 @@ import cz.tilseroz.feedgramauthservice.payload.ApiResponse;
 import cz.tilseroz.feedgramauthservice.payload.JwtAuthenticationResponse;
 import cz.tilseroz.feedgramauthservice.payload.LoginRequest;
 import cz.tilseroz.feedgramauthservice.payload.SignUpRequest;
+import cz.tilseroz.feedgramauthservice.payload.UserUpdateRequest;
 import cz.tilseroz.feedgramauthservice.service.JwtProvider;
 import cz.tilseroz.feedgramauthservice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -84,6 +87,44 @@ public class UserResource {
 
         return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully."));
 
+    }
+
+    @PutMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdateRequest userUpdateRequest) {
+        log.info("Auth-service updating user {}.", userUpdateRequest.getUsername());
+
+        User user = userService.findByUsername(userUpdateRequest.getUsername())
+                .map(User::new)
+                .orElseThrow(() -> new UsernameNotFoundException("Usename was not found."));
+
+        boolean anyChanges = false;
+
+        if (!userUpdateRequest.getUsername().isBlank()) {
+            user.setUsername(userUpdateRequest.getUsername());
+            anyChanges = true;
+        }
+        if (!userUpdateRequest.getEmail().isBlank()) {
+            user.setEmail(userUpdateRequest.getEmail());
+            anyChanges = true;
+        }
+        if (!userUpdateRequest.getName().isBlank()) {
+            user.setName(userUpdateRequest.getName());
+            anyChanges = true;
+        }
+
+        if (anyChanges) {
+            userService.updateUser(user);
+
+            URI location = ServletUriComponentsBuilder
+                    .fromCurrentContextPath().path("/users/{username}")
+                    .buildAndExpand(user.getUsername()).toUri();
+
+            return ResponseEntity.created(location).body(new ApiResponse(true, "User updated successfully."));
+
+        } else {
+            log.warn("No changes have been provided by the user.");
+            throw new BadRequestException("No changes have been provided by the user.");
+        }
     }
 
 }
