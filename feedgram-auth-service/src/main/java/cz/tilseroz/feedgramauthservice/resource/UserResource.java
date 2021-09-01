@@ -95,14 +95,10 @@ public class UserResource {
 
         User user = userService.findByUsername(userUpdateRequest.getUsername())
                 .map(User::new)
-                .orElseThrow(() -> new UsernameNotFoundException("Usename was not found."));
+                .orElseThrow(() -> new UsernameNotFoundException("Username was not found."));
 
         boolean anyChanges = false;
 
-        if (!userUpdateRequest.getUsername().isBlank()) {
-            user.setUsername(userUpdateRequest.getUsername());
-            anyChanges = true;
-        }
         if (!userUpdateRequest.getEmail().isBlank()) {
             user.setEmail(userUpdateRequest.getEmail());
             anyChanges = true;

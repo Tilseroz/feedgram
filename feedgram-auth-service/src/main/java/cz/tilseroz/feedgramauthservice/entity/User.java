@@ -6,8 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
-
-import javax.management.relation.Role;
+import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,7 +14,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -56,6 +54,10 @@ public class User {
     @Column(name = "created_at")
     private Instant createdAt;
 
+    @LastModifiedDate
+    @Column(name = "modified_at")
+    private Instant modifiedAt;
+
     @Column(name = "user_role")
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
@@ -65,10 +67,13 @@ public class User {
 
     public User(User user) {
         this.id = user.getId();
+        this.name = user.getName();
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.email = user.getEmail();
         this.active = user.isActive();
         this.role = user.getRole();
+        this.createdAt = user.getCreatedAt();
+        this.modifiedAt = user.getModifiedAt();
     }
 }

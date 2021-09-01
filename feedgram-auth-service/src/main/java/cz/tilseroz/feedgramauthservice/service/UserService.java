@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.Optional;
 
 @Service
@@ -67,6 +68,7 @@ public class UserService {
          *  Používáme JpaRepository interface, který je implementovaný ve Springu v SimpleJpaRepository. Tam můžeme v metodě "save" vidět, že pokud entita existuje, tak
          *  použijeme merge, jinak persist. Tzn. save je zde správně a něco ve stylu "udpate" apod. tady nenajdeme.
          */
+        user.setModifiedAt(Instant.now());
         User updatedUser = userRepository.save(user);
         userEventSender.sendUserUpdated(user);
 
