@@ -4,7 +4,7 @@ services:
     image: wurstmeister/kafka
     container_name: "kafka"
     ports:
-      - "9090:9090"
+      - "9092:9092"
     environment:
       - KAFKA_ADVERTISED_HOST_NAME=127.0.0.1
       - KAFKA_ADVERTISED_PORT=9092

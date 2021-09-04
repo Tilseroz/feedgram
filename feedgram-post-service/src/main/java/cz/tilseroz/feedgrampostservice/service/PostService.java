@@ -4,6 +4,7 @@ import cz.tilseroz.feedgrampostservice.entity.Post;
 import cz.tilseroz.feedgrampostservice.exception.PostNotFoundException;
 import cz.tilseroz.feedgrampostservice.messaging.PostEventSender;
 import cz.tilseroz.feedgrampostservice.payload.PostRequest;
+import cz.tilseroz.feedgrampostservice.payload.UpdateRequest;
 import cz.tilseroz.feedgrampostservice.repository.PostRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,9 @@ public class PostService {
     public Post createPost(PostRequest postRequest) {
         log.info("Creating post - postMessage {}", postRequest.getPostMessage());
 
-        Post post = updateCreatePostAndSendEvent(postRequest);
+        Post post = new Post(postRequest.getImageUrl(), postRequest.getPostMessage());
+        post = postRepository.save(post);
+        postEventSender.sendPostCreated(post);
 
         log.info("Post {} is saved successfully for a user {}",
                 post.getId(), post.getUsername());
@@ -30,15 +33,38 @@ public class PostService {
         return post;
     }
 
-    public Post updatePost(PostRequest postRequest) {
-        log.info("Updating post - postMessage {}",postRequest.getPostMessage());
+    public Post updatePost(UpdateRequest updateRequest) {
+        log.info("Updating post - postMessage {}", updateRequest.getPostId());
 
-        Post post = updateCreatePostAndSendEvent(postRequest);
+        Post updatedPost = postRepository
+                .findById(updateRequest.getPostId())
+                .map(post -> {
+                    boolean changed = false;
+                    if (!updateRequest.getPostMessage().isBlank()) {
+                        post.setPostMessage(updateRequest.getPostMessage());
+                        changed = true;
+                    }
+                    if (!updateRequest.getImageUrl().isBlank()) {
+                        post.setImageUrl(updateRequest.getImageUrl());
+                        changed = true;
+                    }
 
-        log.info("Post {} is updated successfully for a user {}",
-                post.getId(), post.getUsername());
+                    if (changed) {
+                        post = postRepository.save(post);
+                        postEventSender.sendPostUpdated(post);
+                    } else {
+                        log.info("Received request for update of post {}, but nothing was updated. No changes.",
+                                updateRequest.getPostId());
+                    }
 
-        return post;
+                    return post;
+                })
+                .orElseThrow(() -> {
+                    log.warn("Post {} does not exist, so I couln't update it", updateRequest.getPostId());
+                    return new PostNotFoundException(updateRequest.getPostId());
+                });
+
+        return updatedPost;
     }
 
     public void deletePost(Long postId, String username) {
@@ -59,13 +85,6 @@ public class PostService {
                    log.warn("Post {} was not found.", postId);
                    return new PostNotFoundException(postId);
                 });
-    }
-
-    private Post updateCreatePostAndSendEvent(PostRequest postRequest) {
-        Post post = new Post(postRequest.getImageUrl(), postRequest.getPostMessage());
-        post = postRepository.save(post);
-        postEventSender.sendPostCreated(post);
-        return post;
     }
 
 }

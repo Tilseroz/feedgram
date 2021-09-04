@@ -38,7 +38,7 @@ public class PostEventSender {
         Message<PostEventPayload> message =
                 MessageBuilder
                         .withPayload(postEventPayload)
-                        .setHeader(KafkaHeaders.MESSAGE_KEY, postEventPayload.getId())
+                        .setHeader(KafkaHeaders.MESSAGE_KEY, String.valueOf(postEventPayload.getId()))
                         .build();
 
         postEventChannel.feedgramPostChanged().send(message);

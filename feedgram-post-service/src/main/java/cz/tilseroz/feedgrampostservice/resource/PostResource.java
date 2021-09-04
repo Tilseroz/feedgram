@@ -3,6 +3,7 @@ package cz.tilseroz.feedgrampostservice.resource;
 import cz.tilseroz.feedgrampostservice.entity.Post;
 import cz.tilseroz.feedgrampostservice.payload.ApiResponse;
 import cz.tilseroz.feedgrampostservice.payload.PostRequest;
+import cz.tilseroz.feedgrampostservice.payload.UpdateRequest;
 import cz.tilseroz.feedgrampostservice.service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +44,10 @@ public class PostResource {
     }
 
     @PutMapping("posts")
-    public ResponseEntity<?> updatePost(@Valid @RequestBody PostRequest postRequest) {
-        log.info("Updating post {} ", postRequest.getPostMessage());
+    public ResponseEntity<?> updatePost(@Valid @RequestBody UpdateRequest updateRequest) {
+        log.info("Updating post {} ", updateRequest.getPostId());
 
-        Post post = postService.updatePost(postRequest);
+        Post post = postService.updatePost(updateRequest);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/posts/{id}")

@@ -40,7 +40,7 @@ public class UserEventSender {
         Message<UserEventPayload> message =
                 MessageBuilder
                         .withPayload(payload)
-                        .setHeader(KafkaHeaders.MESSAGE_KEY, payload.getId())
+                        .setHeader(KafkaHeaders.MESSAGE_KEY, String.valueOf(payload.getId()))
                         .build();
 
         userEventChannels.feedgramUserChanged().send(message);
