@@ -10,6 +10,6 @@ public interface UserEventChannel {
     /**
      * "Output" znamená, že jde o kanál, která bude sloužit k publikování zpráv
      */
-    @Output("OUTPUT")
+    @Output(OUTPUT)
     MessageChannel feedgramUserChanged();
 }
