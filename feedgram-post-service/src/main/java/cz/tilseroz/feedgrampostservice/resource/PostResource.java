@@ -7,6 +7,7 @@ import cz.tilseroz.feedgrampostservice.payload.UpdateRequest;
 import cz.tilseroz.feedgrampostservice.service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +20,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.security.Principal;
 
 @Slf4j
 @RestController
@@ -59,8 +59,10 @@ public class PostResource {
     }
 
     @DeleteMapping("posts/{id}")
-    public void deletePost(@PathVariable("id") Long postId, @AuthenticationPrincipal Principal user) {
+    public ResponseEntity<?> deletePost(@PathVariable("id") Long postId, @AuthenticationPrincipal String user) {
         log.info("Deleting post {} ", postId);
-        postService.deletePost(postId, user.getName());
+        postService.deletePost(postId, user);
+
+        return ResponseEntity.ok(new ApiResponse(true, String.format("Post %d successfully deleted", postId)));
     }
 }

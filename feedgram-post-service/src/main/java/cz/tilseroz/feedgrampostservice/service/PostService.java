@@ -2,6 +2,7 @@ package cz.tilseroz.feedgrampostservice.service;
 
 import cz.tilseroz.feedgrampostservice.entity.Post;
 import cz.tilseroz.feedgrampostservice.exception.PostNotFoundException;
+import cz.tilseroz.feedgrampostservice.exception.UserNotAllowedException;
 import cz.tilseroz.feedgrampostservice.messaging.PostEventSender;
 import cz.tilseroz.feedgrampostservice.payload.PostRequest;
 import cz.tilseroz.feedgrampostservice.payload.UpdateRequest;
@@ -73,8 +74,9 @@ public class PostService {
         postRepository
                 .findById(postId)
                 .map(post -> {
-                    if (!post.getUsername().equals(username)) {
+                    if (!username.equals(post.getUsername())) {
                         log.warn("User {} is not allowed to delete this post. postId: {}", username, postId);
+                        throw new UserNotAllowedException(username, postId);
                     }
 
                     postRepository.delete(post);
