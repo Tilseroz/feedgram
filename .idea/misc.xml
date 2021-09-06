@@ -6,6 +6,7 @@
         <option value="$PROJECT_DIR$/feedgram-discovery/pom.xml" />
         <option value="$PROJECT_DIR$/feedgram-auth-service/pom.xml" />
         <option value="$PROJECT_DIR$/feedgram-post-service/pom.xml" />
+        <option value="$PROJECT_DIR$/feedgram-graph-service/pom.xml" />
       </list>
     </option>
   </component>

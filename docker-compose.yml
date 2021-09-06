@@ -17,3 +17,9 @@ services:
       - "2181:2181"
     environment:
       - KAFKA_ADVERTISED_HOST_NAME=zookeeper
+
+  neo4j:
+    image: neo4j:latest
+    ports:
+      - "7474:7474"
+      - "7687:7687"
