@@ -2,10 +2,11 @@ package cz.tilseroz.feedgramgraphservice.entity;
 
 import lombok.Builder;
 import lombok.Data;
-import org.neo4j.ogm.annotation.GeneratedValue;
-import org.neo4j.ogm.annotation.Id;
+
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
+import org.springframework.data.neo4j.core.schema.Id;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,5 +24,5 @@ public class User {
     private String name;
 
     @Relationship(type = "IS_FOLLOWING")
-    private Set<Friendship> friendships = new HashSet<>();
+    private Set<Friendship> friendships;
 }

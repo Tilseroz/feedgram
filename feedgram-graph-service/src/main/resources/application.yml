@@ -1,1 +1,47 @@
+spring:
+  application:
+    name: feedgram-graph
 
+  neo4j:
+    uri: bolt://localhost:7687
+    authentication:
+      username: neo4j
+      password: tilser
+
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+          configuration:
+            key:
+              deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        bindings:
+          feedgramUserChanged:
+            consumer:
+              startOffset: latest
+              autoCommitOffset: false
+      bindings:
+        feedgramUserChanged:
+          destination: feedgram.user.changed
+          contentType: application/json
+          group: graphService
+          consumer:
+            startOffset: latest
+            autoCommitOffset: false
+
+server:
+  port: 8002
+
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka
+
+security:
+  jwt:
+    uri: /auth/**
+    header: Authorization
+    prefix: Bearer
+    expiration: 86400
+    secret: davidtilserfeedgramsecrettoken

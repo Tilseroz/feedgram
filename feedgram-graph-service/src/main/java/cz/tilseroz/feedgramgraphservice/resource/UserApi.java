@@ -58,4 +58,25 @@ public class UserApi {
 
         return ResponseEntity.ok(userService.isFollowing(usernameFollower, usernameFollowedUser));
     }
+
+    @GetMapping("/users/{username}/followers")
+    public ResponseEntity<?> retrieveFollowers(@PathVariable String username) {
+        log.info("Request for retrieving followers of user {}", username);
+
+        return ResponseEntity.ok(userService.retrieveFollowers(username));
+    }
+
+    @GetMapping("/users/{username}/following")
+    public ResponseEntity<?> retrieveFollowing(@PathVariable String username) {
+        log.info("Request for retrieving followers of user {}", username);
+
+        return ResponseEntity.ok(userService.retrieveFollowing(username));
+    }
+
+    @GetMapping("/users/{username}/statistics")
+    public ResponseEntity<?> findFollowingFollowersStats(@PathVariable String username) {
+        log.info("Received request to get node degree for {}", username);
+
+        return ResponseEntity.ok(userService.findFollowingFollowersStats(username));
+    }
 }

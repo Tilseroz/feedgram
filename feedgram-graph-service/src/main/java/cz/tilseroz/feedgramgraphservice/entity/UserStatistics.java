@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 @Builder
-public class NodeDegree {
+public class UserStatistics {
 
-    long outDegree;
-    long inDegree;
+    long numberOfFollowing;
+    long numberOfFollowers;
 }
