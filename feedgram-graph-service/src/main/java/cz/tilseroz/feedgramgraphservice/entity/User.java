@@ -3,17 +3,17 @@ package cz.tilseroz.feedgramgraphservice.entity;
 import lombok.Builder;
 import lombok.Data;
 
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Relationship;
+
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
+import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Data
 @Builder
-@NodeEntity
+@Node
 public class User {
 
     @Id
@@ -24,5 +24,5 @@ public class User {
     private String name;
 
     @Relationship(type = "IS_FOLLOWING")
-    private Set<Friendship> friendships;
+    private Set<User> friendships;
 }

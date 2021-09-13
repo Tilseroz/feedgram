@@ -2,6 +2,7 @@ VÝUKOVÝ PŘÍKLAD:
 
 TECHNOLOGIE:
 - SpringBoot
+- Spring Security
 - Maven
 - Netflix Zuul (API gateway)
 - Eureka (Discovery Service)
@@ -13,6 +14,8 @@ TECHNOLOGIE:
 - FeignClient
 - Lombok
 - Hibernate
+- Neo4j
+- Casandra
 
 Popis aplikace
 - ApiGateway - brána k FE (Zuul, Eureka)
@@ -20,11 +23,11 @@ Popis aplikace
 - PostService: vytváří příspěvky (Kafka, Eureka)
 - FeedService: získává uživatelův feed (Kafka, Eureka)
 - DiscoveryService - list servis (Spring Cloud Stream with Eureka)
+- GraphService: ukládá vazby mezi users
 
 CO BY BYLO DOBRÉ DODĚLAT:
 - FE v Reactu
 - škálovat aplikaci pomocí Kubernetes
-- používat databáze Casandra a Neo4j
 
 DATABÁZE:
 - tabulka USERS

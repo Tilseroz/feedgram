@@ -60,7 +60,7 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
      * konfigurace authentication manager tak, aby měl správného providera
      *
      * AuthenticationManager
-     * Do Authentication managera můžeme registrovat různé providery a on na základě typu doruží authentication request do správného provideru
+     * Do Authentication managera můžeme registrovat různé providery a on na základě typu doručí authentication request do správného provideru
      *
      * AuthenticationProvider
      * Zpracovává konkrétní typy ověřování. Jeho rozhraní nabízí jenom dvě funkce: "authenticate" (řeší authentication request)

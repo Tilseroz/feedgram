@@ -1,6 +1,5 @@
 package cz.tilseroz.feedgramgraphservice.service;
 
-import cz.tilseroz.feedgramgraphservice.entity.Friendship;
 import cz.tilseroz.feedgramgraphservice.entity.UserStatistics;
 import cz.tilseroz.feedgramgraphservice.entity.User;
 import cz.tilseroz.feedgramgraphservice.exception.UsernameAlreadyExistsException;
@@ -8,7 +7,6 @@ import cz.tilseroz.feedgramgraphservice.exception.UsernameNotExistException;
 import cz.tilseroz.feedgramgraphservice.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -50,24 +48,20 @@ public class UserService {
                 });
 
         User savedFollowing = userRepository
-                .findByUserId(follower.getUserId())
+                .findByUserId(following.getUserId())
                 .orElseGet(() -> {
-                    log.info("User {} has not been found, so I will create it", follower.getUsername());
+                    log.info("User {} has not been found, so I will create it", following.getUsername());
 
-                    return this.createUser(follower);
+                    return this.createUser(following);
                 });
 
         if (savedFollower.getFriendships() == null) {
             savedFollower.setFriendships(new HashSet<>());
         }
 
-        savedFollower
-                .getFriendships()
-                .add(Friendship.builder()
-                        .startNode(savedFollower)
-                        .endNode(savedFollowing)
-                        .build());
-
+        savedFollower.
+                getFriendships().
+                add(savedFollowing);
         userRepository.save(savedFollower);
     }
 
