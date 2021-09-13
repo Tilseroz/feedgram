@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="feedgram-graph-service" />
+        <module name="feedgram-feed-service" />
         <module name="feedgram-discovery" />
         <module name="feedgram-auth-service" />
         <module name="feedgram-post-service" />
@@ -16,6 +17,7 @@
     <bytecodeTargetLevel>
       <module name="feedgram-auth-service" target="11" />
       <module name="feedgram-discovery" target="11" />
+      <module name="feedgram-feed-service" target="11" />
       <module name="feedgram-graph-service" target="11" />
       <module name="feedgram-post-service" target="11" />
     </bytecodeTargetLevel>
@@ -24,6 +26,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="feedgram-auth-service" options="-parameters" />
       <module name="feedgram-discovery" options="-parameters" />
+      <module name="feedgram-feed-service" options="-parameters" />
       <module name="feedgram-graph-service" options="-parameters" />
       <module name="feedgram-post-service" options="-parameters" />
     </option>
