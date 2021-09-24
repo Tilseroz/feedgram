@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: feedgram-gateway
+
+server:
+  port: 8762
+
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka
+
+zuul:
+  ignored-services: '*'
+  routes:
+    insta-auth:
+      path: /auth/**
+      service-id: feedgram-auth
+      sensitive-headers: Cookie,Set-Cookie
+    insta-media:
+      path: /media/**
+      service-id: feedgram-media
+      sensitive-headers: Cookie,Set-Cookie
+    insta-post:
+      path: /post/**
+      service-id: feedgram-post
+      sensitive-headers: Cookie,Set-Cookie
+    insta-graph:
+      path: /graph/**
+      service-id: feedgram-graph
+      sensitive-headers: Cookie,Set-Cookie
+    insta-feed:
+      path: /feed/**
+      service-id: feedgram-feed
+      sensitive-headers: Cookie,Set-Cookie
+
+ribbon:
+  ConnectTimeout: 60000
+  ReadTimeout: 600000
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 600000
+
+security:
+  basic:
+    enable: false
+
+  jwt:
+    uri: /auth/**
+    header: Authorization
+    prefix: Bearer
+    expiration: 86400
+    secret: davidtilserfeedgramsecrettoken

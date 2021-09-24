@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="feedgram-api-gateway" />
         <module name="feedgram-graph-service" />
         <module name="feedgram-feed-service" />
         <module name="feedgram-discovery" />
@@ -15,6 +16,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="feedgram-api-gateway" target="11" />
       <module name="feedgram-auth-service" target="11" />
       <module name="feedgram-discovery" target="11" />
       <module name="feedgram-feed-service" target="11" />
@@ -24,6 +26,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="feedgram-api-gateway" options="-parameters" />
       <module name="feedgram-auth-service" options="-parameters" />
       <module name="feedgram-discovery" options="-parameters" />
       <module name="feedgram-feed-service" options="-parameters" />

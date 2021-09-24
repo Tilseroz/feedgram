@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/feedgram.iml" filepath="$PROJECT_DIR$/.idea/feedgram.iml" />
+      <module fileurl="file://$PROJECT_DIR$/feedgram-api-gateway/feedgram-api-gateway.iml" filepath="$PROJECT_DIR$/feedgram-api-gateway/feedgram-api-gateway.iml" />
       <module fileurl="file://$PROJECT_DIR$/feedgram-auth-service/feedgram-auth-service.iml" filepath="$PROJECT_DIR$/feedgram-auth-service/feedgram-auth-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/feedgram-discovery/feedgram-discovery.iml" filepath="$PROJECT_DIR$/feedgram-discovery/feedgram-discovery.iml" />
       <module fileurl="file://$PROJECT_DIR$/feedgram-feed-service/feedgram-feed-service.iml" filepath="$PROJECT_DIR$/feedgram-feed-service/feedgram-feed-service.iml" />
