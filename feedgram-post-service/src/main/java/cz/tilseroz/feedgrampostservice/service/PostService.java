@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Slf4j
 public class PostService {
@@ -87,6 +89,14 @@ public class PostService {
                    log.warn("Post {} was not found.", postId);
                    return new PostNotFoundException(postId);
                 });
+    }
+
+    public List<Post> findByIdInOrderByCreatedAtDesc(List<String> ids) {
+        return postRepository.findByIdInOrderByCreatedAtDesc(ids);
+    }
+
+    public List<Post> postsByUsername(String username) {
+        return postRepository.findByUsernameOrderByCreatedAtDesc(username);
     }
 
 }

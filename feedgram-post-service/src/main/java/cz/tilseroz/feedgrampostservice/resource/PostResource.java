@@ -20,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -64,5 +65,17 @@ public class PostResource {
         postService.deletePost(postId, user);
 
         return ResponseEntity.ok(new ApiResponse(true, String.format("Post %d successfully deleted", postId)));
+    }
+
+    @PostMapping("posts/in")
+    public ResponseEntity<?> findPostsByIdIn(@RequestBody List<String> ids) {
+        log.info("Finding posts for {} ids.",
+                ids.size());
+
+        List<Post> posts = postService.findByIdInOrderByCreatedAtDesc(ids);
+
+        log.info("Found {} posts.", ids.size());
+
+        return ResponseEntity.ok(posts);
     }
 }

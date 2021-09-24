@@ -4,9 +4,13 @@ import cz.tilseroz.feedgramgraphservice.entity.UserStatistics;
 import cz.tilseroz.feedgramgraphservice.entity.User;
 import cz.tilseroz.feedgramgraphservice.exception.UsernameAlreadyExistsException;
 import cz.tilseroz.feedgramgraphservice.exception.UsernameNotExistException;
+import cz.tilseroz.feedgramgraphservice.payload.PagedResult;
 import cz.tilseroz.feedgramgraphservice.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -121,5 +125,26 @@ public class UserService {
                             user.getUsername());
                     throw new UsernameNotExistException(user.getUsername());
                 });
+    }
+
+    public PagedResult<User> findPaginatedFollowers(String username, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<User> followers = userRepository.retrieveFollowers(username, pageable);
+        log.info("found {} followers for user {}", followers.getTotalElements(), username);
+
+        return buildPagedResult(followers);
+    }
+
+    private PagedResult<User> buildPagedResult(Page<User> page){
+        return PagedResult
+                .<User>builder()
+                .content(page.getContent())
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .page(page.getPageable().getPageNumber())
+                .size(page.getSize())
+                .last(page.isLast())
+                .build();
     }
 }

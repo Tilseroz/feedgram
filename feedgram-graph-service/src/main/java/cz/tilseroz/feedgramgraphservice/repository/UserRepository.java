@@ -1,9 +1,10 @@
 package cz.tilseroz.feedgramgraphservice.repository;
 
 import cz.tilseroz.feedgramgraphservice.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,4 +28,8 @@ public interface UserRepository extends Neo4jRepository<User, Long> {
 
     @Query("MATCH (n:User{username:$username})-->(f:User) Return f")
     List<User> retrieveFollowing(String username);
+
+    @Query(value = "MATCH (n:User{username:$username})<--(f:User) Return f",
+            countQuery = "MATCH (n:User{username:$username})<--(f:User) Return count(f)")
+    Page<User> retrieveFollowers(String username, Pageable pageable);
 }
