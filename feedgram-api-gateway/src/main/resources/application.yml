@@ -13,25 +13,17 @@ eureka:
 zuul:
   ignored-services: '*'
   routes:
-    insta-auth:
+    feedgram-auth:
       path: /auth/**
       service-id: feedgram-auth
       sensitive-headers: Cookie,Set-Cookie
-    insta-media:
-      path: /media/**
-      service-id: feedgram-media
-      sensitive-headers: Cookie,Set-Cookie
-    insta-post:
+    feedgram-post:
       path: /post/**
       service-id: feedgram-post
       sensitive-headers: Cookie,Set-Cookie
-    insta-graph:
+    feedgram-graph:
       path: /graph/**
       service-id: feedgram-graph
-      sensitive-headers: Cookie,Set-Cookie
-    insta-feed:
-      path: /feed/**
-      service-id: feedgram-feed
       sensitive-headers: Cookie,Set-Cookie
 
 ribbon:
@@ -47,8 +39,6 @@ hystrix:
             timeoutInMilliseconds: 600000
 
 security:
-  basic:
-    enable: false
 
   jwt:
     uri: /auth/**

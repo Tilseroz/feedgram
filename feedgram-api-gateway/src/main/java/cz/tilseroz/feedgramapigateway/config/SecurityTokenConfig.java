@@ -32,11 +32,17 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterAfter(new JwtTokenAuthenticationFilter(jwtConfig), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/auth/signin").permitAll()
+                .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth/users").anonymous()
                 .anyRequest().authenticated();
     }
 
+    /**
+     * CORS - Cross-Origin Resource Sharing
+     *
+     * Jde o to, že musíme na BE straně nastavit, který origin s našemi API může komunikovat. Pokud nastavíme hvězdičku, tak nastavujeme, že jakýkoliv.
+     *
+     */
     @Bean
     public CorsFilter corsFilter() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
