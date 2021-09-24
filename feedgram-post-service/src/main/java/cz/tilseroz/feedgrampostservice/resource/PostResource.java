@@ -27,7 +27,7 @@ import java.util.List;
 public class PostResource {
 
     @Autowired
-    PostService postService;
+    private PostService postService;
 
     @PostMapping("posts")
     public ResponseEntity<?> createPost(@Valid @RequestBody PostRequest postRequest) {
