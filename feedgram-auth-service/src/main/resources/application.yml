@@ -20,7 +20,8 @@ spring:
           destination: feedgram.user.changed
           contentType: application/json
 
-server:
+
+  server:
   port: 9000
 
 eureka:
@@ -29,6 +30,9 @@ eureka:
       default-zone: http://localhost:8761/eureka
 
 security:
+  basic:
+    enable: false
+
   jwt:
     uri: /auth/**
     header: Authorization

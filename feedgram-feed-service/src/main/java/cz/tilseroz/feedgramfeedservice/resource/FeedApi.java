@@ -1,6 +1,6 @@
 package cz.tilseroz.feedgramfeedservice.resource;
 
-import cz.tilseroz.feedgramfeedservice.Payload.FeedResult;
+import cz.tilseroz.feedgramfeedservice.payload.FeedResult;
 import cz.tilseroz.feedgramfeedservice.model.Post;
 import cz.tilseroz.feedgramfeedservice.service.FeedService;
 import lombok.extern.slf4j.Slf4j;

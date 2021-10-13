@@ -1,6 +1,6 @@
 spring:
   application:
-    name: feedgram-gateway
+    name: api-gateway
 
 server:
   port: 8762
@@ -17,14 +17,14 @@ zuul:
       path: /auth/**
       service-id: feedgram-auth
       sensitive-headers: Cookie,Set-Cookie
-    feedgram-post:
-      path: /post/**
-      service-id: feedgram-post
-      sensitive-headers: Cookie,Set-Cookie
-    feedgram-graph:
-      path: /graph/**
-      service-id: feedgram-graph
-      sensitive-headers: Cookie,Set-Cookie
+#    feedgram-post:
+#      path: /post/**
+#      service-id: feedgram-post
+#      sensitive-headers: Cookie,Set-Cookie
+#    feedgram-graph:
+#      path: /graph/**
+#      service-id: feedgram-graph
+#      sensitive-headers: Cookie,Set-Cookie
 
 ribbon:
   ConnectTimeout: 60000
@@ -39,6 +39,8 @@ hystrix:
             timeoutInMilliseconds: 600000
 
 security:
+  basic:
+    enable: false
 
   jwt:
     uri: /auth/**

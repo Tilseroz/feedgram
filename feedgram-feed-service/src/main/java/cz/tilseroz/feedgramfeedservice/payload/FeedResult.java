@@ -1,4 +1,4 @@
-package cz.tilseroz.feedgramfeedservice.Payload;
+package cz.tilseroz.feedgramfeedservice.payload;
 
 import lombok.Builder;
 import lombok.Data;

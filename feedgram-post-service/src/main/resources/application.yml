@@ -30,7 +30,7 @@ eureka:
 
 security:
   jwt:
-    uri: /auth/**
+    uri: /post/**
     header: Authorization
     prefix: Bearer
     expiration: 86400
