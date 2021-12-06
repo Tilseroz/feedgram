@@ -5,7 +5,7 @@ TECHNOLOGIE:
 - Spring Security
 - Maven
 - Spring Cloud Gateway
-- ~~Netflix Zuul (not supported by Spring anymore)~~
+- ~~Netflix Zuul~~ (not supported by Spring anymore)
 - Eureka (Discovery Service)
 - Ribbon
 - Spring Cloud Stream
