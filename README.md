@@ -4,7 +4,8 @@ TECHNOLOGIE:
 - SpringBoot
 - Spring Security
 - Maven
-- Netflix Zuul (API gateway)
+- Spring Cloud Gateway
+- ~~Netflix Zuul (not supported by Spring anymore)~~
 - Eureka (Discovery Service)
 - Ribbon
 - Spring Cloud Stream
