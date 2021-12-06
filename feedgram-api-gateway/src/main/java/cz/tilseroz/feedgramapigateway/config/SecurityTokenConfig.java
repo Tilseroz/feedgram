@@ -3,11 +3,17 @@ package cz.tilseroz.feedgramapigateway.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -37,11 +43,21 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
     }
 
+    @Bean
+    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+    //todo
+        http.cors().and()
+                .csrf().disable()
+                .authorizeExchange()
+                .anyExchange()
+                .authenticated();
+        return http.build();
+    }
+
     /**
      * CORS - Cross-Origin Resource Sharing
-     *
+     * <p>
      * Jde o to, že musíme na BE straně nastavit, který origin s našemi API může komunikovat. Pokud nastavíme hvězdičku, tak nastavujeme, že jakýkoliv.
-     *
      */
     @Bean
     public CorsFilter corsFilter() {

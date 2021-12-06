@@ -24,10 +24,10 @@ services:
       - "7474:7474"
       - "7687:7687"
 
-  cassandra:
-    image: cassandra:latest
-    ports:
-    - "7000:7000"
-    - "9042:9042"
-    volumes:
-    - /Workspace/feedCassandra:/var/lib/cassandra
+#  cassandra:
+#    image: cassandra:latest
+#    ports:
+#    - "7000:7000"
+#    - "9042:9042"
+#    volumes:
+#    - /Workspace/feedCassandra:/var/lib/cassandra

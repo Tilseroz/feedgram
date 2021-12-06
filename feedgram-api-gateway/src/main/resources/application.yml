@@ -1,6 +1,19 @@
 spring:
   application:
     name: api-gateway
+  cloud:
+    gateway:
+      routes:
+      - id: feedgramauth
+        uri: lb://feedgramauth
+        predicates:
+          - Path=/auth/**
+      discovery:
+        locator:
+          enabled: true
+  main:
+    web-application-type: reactive
+    allow-bean-definition-overriding: true
 
 server:
   port: 8762
@@ -10,13 +23,13 @@ eureka:
     service-url:
       default-zone: http://localhost:8761/eureka
 
-zuul:
-  ignored-services: '*'
-  routes:
-    feedgram-auth:
-      path: /auth/**
-      service-id: feedgram-auth
-      sensitive-headers: Cookie,Set-Cookie
+#zuul:
+#  ignored-services: '*'
+#  routes:
+#    feedgram-auth:
+#      path: /auth/**
+#      service-id: FEEDGRAM-AUTH
+#      sensitive-headers: Cookie,Set-Cookie
 #    feedgram-post:
 #      path: /post/**
 #      service-id: feedgram-post
@@ -26,17 +39,22 @@ zuul:
 #      service-id: feedgram-graph
 #      sensitive-headers: Cookie,Set-Cookie
 
-ribbon:
-  ConnectTimeout: 60000
-  ReadTimeout: 600000
+#ribbon:
+#  ConnectTimeout: 60000
+#  ReadTimeout: 600000
 
-hystrix:
-  command:
-    default:
-      execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: 600000
+#hystrix:
+#  command:
+#    default:
+#      execution:
+#        isolation:
+#          thread:
+#            timeoutInMilliseconds: 600000
+
+management:
+   endpoint:
+      gateway:
+         enabled: true
 
 security:
   basic:
