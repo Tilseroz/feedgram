@@ -125,10 +125,9 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
                  *  anyRequest.authenticated - nastavíme všechny ostatní endpoiny jako neveřejné
                  */
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/login").permitAll()
-                .antMatchers(HttpMethod.POST, "/users").anonymous()
+                .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/auth/users").anonymous()
                 .anyRequest().authenticated();
-
 
     }
 
