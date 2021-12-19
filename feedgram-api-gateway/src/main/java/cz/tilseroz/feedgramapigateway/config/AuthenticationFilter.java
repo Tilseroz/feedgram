@@ -1,5 +1,6 @@
 package cz.tilseroz.feedgramapigateway.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -13,6 +14,7 @@ import reactor.core.publisher.Mono;
 
 @RefreshScope
 @Component
+@Slf4j
 public class AuthenticationFilter implements GatewayFilter {
 
     @Autowired
@@ -40,6 +42,7 @@ public class AuthenticationFilter implements GatewayFilter {
     }
 
     private Mono<Void> onError(ServerWebExchange exchange, String err, HttpStatus httpStatus) {
+        log.error(err);
         ServerHttpResponse response = exchange.getResponse();
         response.setStatusCode(httpStatus);
         return response.setComplete();
