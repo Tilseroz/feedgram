@@ -68,7 +68,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         /**
          * Pokud jsme se dostali až sem, tak v headeru mám token. Pojďme si ho vytáhnout.
          */
-        String token = header.replace(jwtConfig.getPrefix(), "");
+        String token = header.replace(jwtConfig.getPrefix(), "").trim();
 
         if (tokenProvider.validateJwtToken(token)) {
             Claims claims = tokenProvider.getClaimsFromJwt(token);

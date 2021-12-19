@@ -1,5 +1,6 @@
 package cz.tilseroz.feedgramapigateway.config;
 
+import cz.tilseroz.feedgramapigateway.enums.RoutesEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
@@ -15,13 +16,22 @@ public class GatewayConfig {
     @Bean
     public RouteLocator routes(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("user-service", r -> r.path("/users/**")
+                .route(RoutesEnum.FEED_SERVICE.getServiceId(), r -> r.path(RoutesEnum.FEED_SERVICE.getPathPattern())
                         .filters(f -> f.filter(filter))
-                        .uri("lb://user-service"))
+                        .uri(RoutesEnum.FEED_SERVICE.getUri()))
 
-                .route("feedgramauth", r -> r.path("/auth/**")
+                .route(RoutesEnum.AUTH_SERVICE.getServiceId(), r -> r.path(RoutesEnum.AUTH_SERVICE.getPathPattern())
                         .filters(f -> f.filter(filter))
-                        .uri("lb://feedgramauth"))
+                        .uri(RoutesEnum.AUTH_SERVICE.getUri()))
+
+                .route(RoutesEnum.GRAPH_SERVICE.getServiceId(), r -> r.path(RoutesEnum.GRAPH_SERVICE.getPathPattern())
+                        .filters(f -> f.filter(filter))
+                        .uri(RoutesEnum.GRAPH_SERVICE.getUri()))
+
+                .route(RoutesEnum.POST_SERVICE.getServiceId(), r -> r.path(RoutesEnum.POST_SERVICE.getPathPattern())
+                        .filters(f -> f.filter(filter))
+                        .uri(RoutesEnum.POST_SERVICE.getUri()))
+
                 .build();
     }
 }

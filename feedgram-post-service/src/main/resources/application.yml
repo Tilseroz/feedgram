@@ -1,6 +1,6 @@
 spring:
   application:
-    name: feedgram-post
+    name: post-service
 
   datasource:
     url: jdbc:postgresql://localhost:5432/feedgram

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: feedgram-feed
+    name: feed-service
 
 #  data:
 #    cassandra:
