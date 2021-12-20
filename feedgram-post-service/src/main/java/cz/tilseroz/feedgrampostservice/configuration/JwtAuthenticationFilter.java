@@ -2,6 +2,7 @@ package cz.tilseroz.feedgrampostservice.configuration;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,8 +40,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try {
 
-            Claims claims = Jwts.parser()
-                    .setSigningKey(jwtConfig.getSecret().getBytes())
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(Keys.hmacShaKeyFor(jwtConfig.getSecret().getBytes()))
+                    .build()
                     .parseClaimsJws(token)
                     .getBody();
 

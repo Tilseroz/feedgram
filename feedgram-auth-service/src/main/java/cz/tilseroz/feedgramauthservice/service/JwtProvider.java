@@ -5,9 +5,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -38,25 +38,27 @@ public class JwtProvider {
                         .map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(now + jwtConfiguration.getExpiration() * 1000)) //in milliseconds
-                .signWith(SignatureAlgorithm.HS512, jwtConfiguration.getSecret().getBytes())
+                .signWith(Keys.hmacShaKeyFor(jwtConfiguration.getSecret().getBytes()))
                 .compact();
     }
 
     public Claims getClaimsFromJwt(String jwtToken) {
-        return Jwts.parser()
-                .setSigningKey(jwtConfiguration.getSecret().getBytes())
+        return Jwts.parserBuilder()
+                .setSigningKey(Keys.hmacShaKeyFor(jwtConfiguration.getSecret().getBytes()))
+                .build()
                 .parseClaimsJws(jwtToken)
                 .getBody();
     }
 
     public boolean validateJwtToken(String jwtToken) {
         try {
-            Jwts.parser()
-                    .setSigningKey(jwtConfiguration.getSecret().getBytes())
+            Jwts.parserBuilder()
+                    .setSigningKey(Keys.hmacShaKeyFor(jwtConfiguration.getSecret().getBytes()))
+                    .build()
                     .parseClaimsJws(jwtToken);
 
             return true;
-        } catch (SignatureException ex) {
+        } catch (SecurityException ex) {
             log.error("Invalid JWT signature");
         } catch (MalformedJwtException ex) {
             log.error("Invalid JWT token");
